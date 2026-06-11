@@ -220,8 +220,8 @@ it reads the ball position $(b_x, b_y)$ and computes:
 * **total time the dog needs**: run time + jump time,
 
 $$
-t_\text{need} = \underbrace{d^{-1}\!\!\;(d)}_{\text{run, from §4}} \; + \;
-\underbrace{\sqrt{2\,\Delta h / g}}_{\text{jump, from §5}} .
+t_\text{need} = \underbrace{d^{-1}\!\!\;(d)}_{\text{run}} \; + \;
+\underbrace{\sqrt{2\,\Delta h / g}}_{\text{jump}} .
 $$
 
 The planner prefers a point that is **in front of the dog** ($b_x < g_x$) and
@@ -253,11 +253,11 @@ $$
 
 Each frame the dog is in one of three states, handled in `_advance_dog()`:
 
-1. **Airborne** ($y > 0.01$): follow the ballistic arc (§5), clamping $x$ at the
+1. **Airborne** ($y > 0.01$): follow the ballistic arc, clamping $x$ at the
    target and landing when $y \le 0$.
 2. **Running** ($\lvert\Delta x\rvert > 0.02$): advance horizontally at the
-   current run speed $v(t_\text{run})$ (§4), signed toward the target. Jump when
-   the **time remaining** drops to the apex time (plus mistiming, §9):
+   current run speed $v(t_\text{run})$, signed toward the target. Jump when
+   the **time remaining** drops to the apex time (plus mistiming):
 
 $$
 t^* - t_\text{now} \;\le\; t_\text{apex} + \epsilon_\text{jump}.
@@ -277,7 +277,7 @@ drawn at $y_\text{head} = y + \mathrm{GOAL\_Y}$.
 ### Aim direction
 
 The jaw should meet the ball head-on. Using the ball's velocity at the intercept
-time (estimated by finite difference, $\mathbf v_b \approx [\mathbf b(t^*+\delta) - \mathbf b(t^*)]/\delta$),
+time (estimated by finite difference, $\mathbf v_b \approx [\mathbf b(t^*+\delta) - \mathbf b(t^*)]/\delta$ ),
 the desired jaw direction points *back along* the incoming ball:
 
 $$
@@ -286,7 +286,7 @@ $$
 $$
 
 where $\phi_\text{offset}$ is a fixed bite offset and $\epsilon_\text{jaw}$ a
-random aiming error (§9). The target is stored as the unit vector
+random aiming error. The target is stored as the unit vector
 $(\cos\phi_\text{aim}, \sin\phi_\text{aim})$.
 
 *Code:* `dog motion` cell → `compute_jaw_target()`.
@@ -344,8 +344,7 @@ attempt from per-dog ranges:
 
 A positive $\epsilon_\text{jump}$ makes the dog jump late; a non-zero
 $\epsilon_\text{jaw}$ rotates the bite off the true incoming direction; a
-negative close-mistime snaps the jaw early. These feed directly into the
-formulas of §7 and §8.
+negative close-mistime snaps the jaw early.
 
 The dog's **perception** is also delayed: it only "sees" the ball at its position
 $t_\text{react}$ seconds in the past, which is why the blue perception marker
@@ -376,9 +375,10 @@ $$
 \bigl\lvert\mathrm{wrap}(\mathrm{atan2}(r_y, r_x) - \phi(t))\bigr\rvert
 \;\le\; \theta(t) + 0.01,
 $$
-where \mathrm{wrap} maps an angle to $(-\pi, \pi]$ via
-$((\cdot + \pi) \bmod 2\pi) - \pi$, and $\theta(t)$ is the closing-jaw half-angle
-from §8. If any sampled instant satisfies both, the attempt is a success.
+
+where $\mathrm{wrap}$ maps an angle to $(-\pi, \pi]$ via
+$((\cdot + \pi) \bmod 2\pi) - \pi$, and $\theta(t)$ is the closing-jaw half-angle. 
+If any sampled instant satisfies both, the attempt is a success.
 
 *Code:* `jaw helpers` cell → `check_catch_success()`.
 
