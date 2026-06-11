@@ -1,12 +1,3 @@
-"""Throwable objects and their simulated drag coefficients.
-
-Each object has a mass, frontal area and shape drag coefficient. The drag term
-used by the simulation is computed from those physical properties (it is *not*
-hard-coded):
-
-    drag = (c_d * rho * area) / (2 * mass)
-"""
-
 import math
 
 from constants import RHO

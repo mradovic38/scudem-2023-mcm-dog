@@ -1,11 +1,3 @@
-"""Dog profile: everything that depends on *which* dog is fetching.
-
-All tunable per-dog parameters live in the ``DogProfile`` dataclass, so swapping
-dogs is a one-line change. The default values describe the idealized **Optimal**
-dog (fast reactions, no mistiming); other dogs are created by overriding only the
-fields that differ.
-"""
-
 import random
 from dataclasses import dataclass
 

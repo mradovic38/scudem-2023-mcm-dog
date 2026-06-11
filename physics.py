@@ -1,9 +1,3 @@
-"""Ball & dog kinematics.
-
-Projectile motion with quadratic drag for the ball, and analytic
-accelerate-to-top-speed kinematics for the dog's run.
-"""
-
 import numpy as np
 
 

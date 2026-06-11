@@ -1,18 +1,10 @@
-"""Visualization.
-
-Animate a single fetch attempt: the thrown object, the dog's delayed perception
-of it, and the dog running / jumping / snapping its jaw.
-
-``plot`` takes ``rotated_jaw_angle`` as an argument so this module stays
-independent of the catch-detection code that defines it.
-"""
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from IPython.display import HTML, display
 
-from constants import GOAL_Y, INTERVAL
+from constants import FPS, GOAL_Y, INTERVAL
 
 
 def _jaw_open_amount(dog, t_now, time_since_seen, reaction_delay_s, intercept_t, jaw_close_mistime):
@@ -90,8 +82,11 @@ def _update_jaw(dog, rotated_jaw_angle, jaw_upper, jaw_lower, t_now, reaction_de
 def plot(dog, rotated_jaw_angle, throw_range, throw_angle_deg, goal_x, error_radius, v0,
          x1, y1, x2, y2, t, reaction_delay_s, num_frames,
          dog_positions, intercept_target, intercept_is_q2, intercept_t,
-         jaw_target, thrown_object, jaw_close_mistime):
-    """Render and display an animation of a single fetch attempt."""
+         jaw_target, thrown_object, jaw_close_mistime, save_path):
+    """Render an animation of a single fetch attempt and save it to ``save_path``.
+
+    Returns the path to the written MP4 file.
+    """
     fig, ax = _setup_axes(throw_range, throw_angle_deg, error_radius, v0,
                           reaction_delay_s, thrown_object, goal_x, dog)
 
@@ -145,5 +140,8 @@ def plot(dog, rotated_jaw_angle, throw_range, throw_angle_deg, goal_x, error_rad
 
     ani = FuncAnimation(fig, animate, frames=num_frames, init_func=init,
                         interval=INTERVAL, blit=True)
-    display(HTML(ani.to_jshtml()))
+
+    os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+    ani.save(save_path, writer="ffmpeg", fps=FPS, dpi=120)
     plt.close(fig)
+    return save_path

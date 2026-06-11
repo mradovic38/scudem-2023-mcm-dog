@@ -1,9 +1,3 @@
-"""Interception planning.
-
-Given the dog's position and the predicted ball path, decide which point on the
-trajectory the dog should aim to intercept.
-"""
-
 import numpy as np
 
 from constants import FPS, G, GOAL_Y
