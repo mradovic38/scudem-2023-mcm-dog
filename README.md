@@ -81,9 +81,9 @@ sampled arrays $t_i, x_i, y_i$. The position at an arbitrary time is obtained by
 linear interpolation between samples:
 
 $$
-x(t) = \operatorname{lerp}(t;\, t_i, x_i),
+x(t) = \text{lerp}(t;\, t_i, x_i),
 \qquad
-y(t) = \operatorname{lerp}(t;\, t_i, y_i).
+y(t) = \text{lerp}(t;\, t_i, y_i).
 $$
 
 *Code:* `physics.py → generate_ball_trajectory()`, `compute_ball_position_at_time()`.
@@ -95,7 +95,7 @@ $$
 The dog rests at horizontal position $g_x \in [1.2, 1.8]$ m with its head at
 height $\mathrm{GOAL\_Y} = 0.55$ m. The thrower *aims* at the dog but misses by a
 random offset sampled **uniformly over a disc** of radius
-$R = \mathrm{THROW\_ERROR\_RADIUS} = 0.3$ m. To get a uniform distribution over
+$R = \text{THROW ERROR RADIUS} = 0.3$ m. To get a uniform distribution over
 the disc area (not clustered at the centre), the radius uses a square root:
 
 $$
@@ -281,7 +281,7 @@ time (estimated by finite difference, $\mathbf v_b \approx [\mathbf b(t^*+\delta
 the desired jaw direction points *back along* the incoming ball:
 
 $$
-\phi_\text{aim} = \operatorname{atan2}(-v_{b,y},\,-v_{b,x})
+\phi_\text{aim} = \mathrm{atan2}(-v_{b,y},\,-v_{b,x})
                  + \phi_\text{offset} + \epsilon_\text{jaw},
 $$
 
@@ -304,7 +304,7 @@ $$
 the current jaw angle is the wrapped, rate-limited rotation
 
 $$
-\phi(\tau) = \phi_0 + \operatorname{sign}(\Delta\phi)\,
+\phi(\tau) = \phi_0 + \mathrm{sign}(\Delta\phi)\,
 \min\bigl(\lvert\Delta\phi\rvert,\ \omega\,\tau\bigr).
 $$
 
@@ -320,9 +320,9 @@ half-angle is
 $$
 \theta(t) =
 \begin{cases}
-\theta_\text{open}\,\dfrac{t - t_\text{react}}{t^* - t_\text{react}}, & t < t_\text{trig}\quad(\text{opening}),\\[2ex]
-\theta_\text{open}\left(1 - \dfrac{t - t_\text{trig}}{T_c}\right), & t_\text{trig} \le t < t_\text{trig} + T_c\quad(\text{closing}),\\[2ex]
-0, & \text{otherwise (shut).}
+\theta_{\mathrm{open}}\,\dfrac{t - t_{\mathrm{react}}}{t^* - t_{\mathrm{react}}}, & t < t_{\mathrm{trig}} \; (\text{opening}) \\
+\theta_{\mathrm{open}}\left(1 - \dfrac{t - t_{\mathrm{trig}}}{T_c}\right), & t_{\mathrm{trig}} \le t < t_{\mathrm{trig}} + T_c \; (\text{closing}) \\
+0, & \text{otherwise (shut)}
 \end{cases}
 $$
 
@@ -373,11 +373,10 @@ $$
    tolerance):
 
 $$
-\bigl\lvert\operatorname{wrap}(\operatorname{atan2}(r_y, r_x) - \phi(t))\bigr\rvert
+\bigl\lvert\mathrm{wrap}(\mathrm{atan2}(r_y, r_x) - \phi(t))\bigr\rvert
 \;\le\; \theta(t) + 0.01,
 $$
-
-where $\operatorname{wrap}$ maps an angle to $(-\pi, \pi]$ via
+where \mathrm{wrap} maps an angle to $(-\pi, \pi]$ via
 $((\cdot + \pi) \bmod 2\pi) - \pi$, and $\theta(t)$ is the closing-jaw half-angle
 from §8. If any sampled instant satisfies both, the attempt is a success.
 
@@ -391,11 +390,11 @@ The simulation runs on a fixed frame grid. The total duration is the flight time
 plus the reaction delay plus a 0.3 s tail, sampled at $\mathrm{FPS} = 30$:
 
 $$
-T = t_\text{flight} + t_\text{react} + 0.3,
+T = t_{\mathrm{flight}} + t_{\mathrm{react}} + 0.3,
 \qquad
-N = \max(2,\ \lfloor T \cdot \mathrm{FPS}\rfloor),
+N = \max(2,\ \lfloor T \cdot \mathrm{FPS} \rfloor),
 \qquad
-t = \operatorname{linspace}(0, T, N).
+t = \mathrm{linspace}(0, T, N).
 $$
 
 The animation shows the **true** ball (red), the dog's time-delayed
