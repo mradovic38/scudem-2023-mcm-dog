@@ -1,0 +1,9 @@
+seed=1952775105
+object=ball
+outcome=miss
+total_frames=37
+frame_stride=2
+intercept_frame_index_zero_based=15
+intercept_frame_png=frame_0016.png
+intercept_frame_saved=no
+nearest_saved_frame_png=frame_0015.png

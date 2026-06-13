@@ -1,0 +1,9 @@
+seed=2080539659
+object=taco
+outcome=miss
+total_frames=39
+frame_stride=2
+intercept_frame_index_zero_based=17
+intercept_frame_png=frame_0018.png
+intercept_frame_saved=no
+nearest_saved_frame_png=frame_0017.png
